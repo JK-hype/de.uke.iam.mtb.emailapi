@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import de.uke.iam.mtb.emailapi.service.EmailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @Controller
 public class EmailController {
@@ -16,10 +18,13 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @GetMapping("/email/download/fastQ")
-    public ResponseEntity<String> downloadFastQFiles() {
-        emailService.downloadFastqFiles();
-        return new ResponseEntity<String>("Downloaded fastQ files", HttpStatus.OK);
+    @Operation(summary = "Check emails", description = "Check inbox folder for new emails")
+
+    @ApiResponse(responseCode = "200", description = "Checked inbox for new emails")
+    @GetMapping("/email/check_emails")
+    public ResponseEntity<String> checkEmails() {
+        emailService.checkInboxForNewEmails();
+        return new ResponseEntity<String>("Checked inbox for new emails", HttpStatus.OK);
     }
 
 }
